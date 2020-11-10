@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
     return knex.schema.createTable("flashcards", tbl => {
-      tbl.increment();
+      tbl.increments();
   
       tbl.string("question").notNullable();
       tbl.string("answer").notNullable();
