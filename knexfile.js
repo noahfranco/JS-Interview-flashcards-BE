@@ -3,6 +3,7 @@ require("dotenv").config()
 
 //uncomment the line below if you are workign on heroku servers
 //pg.defaults.ssl = true;
+// PORT=5432
 
 module.exports = {
   development: {
@@ -10,7 +11,7 @@ module.exports = {
     useNullAsDefault: true,
     connection: process.env.DATABASE_URL,
     migration: {
-      directory: "./database/development/migrations"
+      directory: "./migrations"
     },
     seeds: {
       directory: "./database/development/seeds"
