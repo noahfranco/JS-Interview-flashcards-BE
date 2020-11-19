@@ -9,7 +9,7 @@ router.post("/post", async (req, res) => {
         const cardBody = req.body;
         const postFlashCards = await flashCardModels.add(cardBody);
         res.status(200).json(postFlashCards) 
-    } catch (error) {
+    } catch(error) {
         res.status(500).json({error: "not posting"}, error.message)
     }
 })
@@ -21,6 +21,18 @@ router.get("/get", async (req, res) => {
         res.status(200).json(getFlashCards);
     } catch(error) {
         res.status(500).json({error: error});
+    }
+})
+
+// http://localhost:3333/api/flashcards/put
+router.put("/put", async (req, res) => {
+    try {
+        const {id} = req.body
+        const event = req.body
+        const editFlashCard = await flashCardModels.edit(id, event)
+        res.status(200).json(editFlashCard)
+    } catch(error) {
+        res.status(500).json({error: "Internal Server Error"}, error.message)
     }
 })
 
