@@ -9,10 +9,10 @@ const add = (qa) => {
 }
 
 const edit = (id, event) => {
-    return db("flashcards").where({id}).update(event)
+    return db("flashcards").where({id}).update(event);
 }
 
-module.exports  = {
+module.exports = {
     add, 
     find, 
     edit
