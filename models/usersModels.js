@@ -4,16 +4,17 @@ const findUser = () => {
     return db("users");
 }
 
-const addUser = (user) => {
-    return db("users").insert(user);
+
+const add = (qa) => {
+    return db("users").insert(qa);
 }
 
 const findById = (id) => {
-    return db("users").where(id).first()
+    return db("users").where(id).first();
 }
 
 module.exports = {
     findUser,
-    addUser,
+    add,
     findById
 }
