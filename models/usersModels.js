@@ -5,8 +5,8 @@ const findUser = () => {
 }
 
 
-const add = (qa) => {
-    return db("users").insert(qa);
+const add = (user) => {
+    return db("users").insert(user);
 }
 
 const findById = (id) => {
