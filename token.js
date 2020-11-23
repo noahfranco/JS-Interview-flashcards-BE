@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const secrests = require("./config/secrest");
+const secrets = require("./config/secrest");
 
 const token = (users) => {
    const payload = {
@@ -7,7 +7,7 @@ const token = (users) => {
     id: users.id
    }
    
-   return jwt.sign(payload, secrests.jwtSecret)
+   return jwt.sign(payload, secrets.jwtSecret)
 }
 
 module.exports = token
