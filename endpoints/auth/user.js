@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const getToken = require("../../middleware/token");
 
 const userModel = require("../../models/usersModels");
+const authenticate = require("../../middleware/authenticate");
 
 // registers users
 // http://localhost:3333/api/users/register
@@ -24,7 +25,7 @@ router.post("/register", async (req, res) => {
 })
 
 // http://localhost:3333/api/users/view
-router.get("/view", async (req, res) => {
+router.get("/view", authenticate, async (req, res) => {
     try {
         const getUser = await userModel.findUser()
         res.status(200).json(getUser)
@@ -38,7 +39,7 @@ router.get("/view", async (req, res) => {
 router.post("/login", (req, res) => {
     try {
         let {email, password} = req.body
-        userModel.findById({email}).then((user) => {
+        userModel.loginFindById({email}).then((user) => {
                if (user && bcrypt.compareSync(password, user.password)) {
                    const token = getToken(user)
                    res.status(200).json({message: `Welcome ${user.username}`, token})
@@ -53,18 +54,22 @@ router.post("/login", (req, res) => {
 })
 
 // returns the current user
+// add authenticate to HTTP get request
 // http://localhost:3333/api/users/:id
 router.get("/:id", (req, res) => {
-    const {id} = req.params
-    
-    if (!id) {
-        res.status(401).json("Bad Request")
+    const { id } =  req.params
+
+    if(!id) {
+        res.status(401).json({ error: "Bad Request"})
     } else {
-        userModel.findById(id).then((userId) => {
-            console.log("hit me")
-            res.status(200).json(userId)
-        }) .catch((error) => {
-            res.status(400).json({error: "Internal Server Error"}, error.message)
+        userModel.findById(id)
+        .then(usersId => {
+            console.log({usersId})
+            res.status(200).json(usersId)
+        })
+        .catch(error => {
+            console.log(error) 
+            res.status(500).json({error: "Internal server error"})
         })
     }
 })

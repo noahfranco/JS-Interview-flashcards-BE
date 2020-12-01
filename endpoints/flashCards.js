@@ -5,7 +5,7 @@ const authenticate = require("../middleware/authenticate");
 
 
 // http://localhost:3333/api/flashcards/post
-router.post("/post", authenticate, async (req, res) => {
+router.post("/post", async (req, res) => {
     try {
         const cardBody = req.body;
         const postFlashCards = await flashCardModels.add(cardBody);
