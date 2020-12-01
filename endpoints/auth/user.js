@@ -56,21 +56,18 @@ router.post("/login", (req, res) => {
 // returns the current user
 // add authenticate to HTTP get request
 // http://localhost:3333/api/users/:id
-router.get("/:id", (req, res) => {
+router.get("/:id", authenticate, async (req, res) => {
     const { id } =  req.params
 
-    if(!id) {
-        res.status(401).json({ error: "Bad Request"})
-    } else {
-        userModel.findById(id)
-        .then(usersId => {
-            console.log({usersId})
-            res.status(200).json(usersId)
-        })
-        .catch(error => {
-            console.log(error) 
-            res.status(500).json({error: "Internal server error"})
-        })
+    try {
+        const getSpecificUser = await userModel.findById(id)
+        if (!getSpecificUser) {
+            res.status(503).json({message: "Service Unavailable"})
+        } else {
+            res.status(200).json(getSpecificUser)
+        }
+    } catch(error) {
+        res.status(500).json({error: "Internal Server Error"})
     }
 })
 
