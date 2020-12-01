@@ -1,10 +1,11 @@
 const router = require('express').Router()
 
 const flashCardModels = require("../models/flashCardsModel");
+const authenticate = require("../middleware/authenticate");
 
 
 // http://localhost:3333/api/flashcards/post
-router.post("/post", async (req, res) => {
+router.post("/post", authenticate, async (req, res) => {
     try {
         const cardBody = req.body;
         const postFlashCards = await flashCardModels.add(cardBody);
@@ -15,7 +16,7 @@ router.post("/post", async (req, res) => {
 })
 
 // http://localhost:3333/api/flashcards/get
-router.get("/get", async (req, res) => {
+router.get("/get", authenticate, async (req, res) => {
     try {
         const getFlashCards = await flashCardModels.find();
         res.status(200).json(getFlashCards);
@@ -25,7 +26,7 @@ router.get("/get", async (req, res) => {
 })
 
 // http://localhost:3333/api/flashcards/put
-router.put("/put", async (req, res) => {
+router.put("/put", authenticate, async (req, res) => {
     try {
         const {id} = req.body
         const event = req.body

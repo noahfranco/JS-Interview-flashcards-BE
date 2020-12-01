@@ -10,7 +10,7 @@ const add = (user) => {
 }
 
 const findById = (id) => {
-    return db("users").where(id).first();
+    return db("users").select("id", "username", "email").where({id}).first();
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
-const getToken = require("../../token");
+const getToken = require("../../middleware/token");
 
 const userModel = require("../../models/usersModels");
 
@@ -13,10 +13,11 @@ router.post("/register", async (req, res) => {
         let hash = bcrypt.hashSync(newUser.password, salt)
         console.log({hash})
         newUser.password = hash
-        console.log("loging password", newUser.password)
+        
         
         const user = await userModel.add(newUser)
-        res.status(200).json(user)
+        const token = getToken(user)
+        res.status(200).json(token)
     } catch(error) {
         res.status(500).json({error: "Internal Server Error"}, error.message) 
     }
@@ -50,5 +51,23 @@ router.post("/login", (req, res) => {
         res.status(500).json("Internal Server Error")
     }
 })
+
+// returns the current user
+// http://localhost:3333/api/users/:id
+router.get("/:id", (req, res) => {
+    const {id} = req.params
+    
+    if (!id) {
+        res.status(401).json("Bad Request")
+    } else {
+        userModel.findById(id).then((userId) => {
+            console.log("hit me")
+            res.status(200).json(userId)
+        }) .catch((error) => {
+            res.status(400).json({error: "Internal Server Error"}, error.message)
+        })
+    }
+})
+
 
 module.exports = router

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const secrets = require("./config/secrest");
+const secrets = require("../config/secrets");
 
 const token = (users) => {
    const payload = {
