@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
 })
 
 // http://localhost:3333/api/users/view
-router.get("/view", authenticate, async (req, res) => {
+router.get("/view", async (req, res) => {
     try {
         const getUser = await userModel.findUser()
         res.status(200).json(getUser)
@@ -39,33 +39,34 @@ router.get("/view", authenticate, async (req, res) => {
 router.post("/login", (req, res) => {
     try {
         let {email, password} = req.body
+        // let {id} = req.params
         userModel.loginFindById({email}).then((user) => {
                if (user && bcrypt.compareSync(password, user.password)) {
                    const token = getToken(user)
-                   res.status(200).json({message: `Welcome ${user.username}`, token})
+                   res.status(200).json({message: `Welcome ${user.username}`, token, user})
                }
         }) .catch((error) => {
             res.status(401).json({error: "Please Provide Credentails"}, error.message)
         })
     
     } catch(error) {
-        res.status(500).json("Internal Server Error")
+        res.status(500).json("Internal Server Error", error.message)
     }
 })
 
 // returns the current user
 // add authenticate to HTTP get request
 // http://localhost:3333/api/users/:id
-router.get("/:id", authenticate, async (req, res) => {
+router.get("/:id", async (req, res) => {
     const { id } =  req.params
 
     try {
         const getSpecificUser = await userModel.findById(id)
-        if (!getSpecificUser) {
-            res.status(503).json({message: "Service Unavailable"})
-        } else {
+        // if (!getSpecificUser) {
+            // res.status(503).json({message: "Service Unavailable"})
+        // } else {
             res.status(200).json(getSpecificUser)
-        }
+        // }
     } catch(error) {
         res.status(500).json({error: "Internal Server Error"})
     }
