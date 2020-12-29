@@ -12,9 +12,15 @@ const edit = (id, event) => {
     return db("flashcards").where({id}).update(event);
 }
 
+const remove = (id) => {
+    return db("flashcards").where({id}).delete()
+}
+
+
 module.exports = {
     add, 
     find, 
-    edit
+    edit,
+    remove
 }
 

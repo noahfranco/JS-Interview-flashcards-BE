@@ -8,6 +8,7 @@ exports.up = function(knex) {
       tbl.integer("esay");
       tbl.integer("medium");
       tbl.integer("hard"); 
+      tbl.integer("users_id")
     })
     .createTable("users", tbl => {
       tbl.increments();

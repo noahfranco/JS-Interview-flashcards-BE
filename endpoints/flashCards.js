@@ -16,7 +16,7 @@ router.post("/post", async (req, res) => {
 })
 
 // http://localhost:3333/api/flashcards/get
-router.get("/get", authenticate, async (req, res) => {
+router.get("/get", async (req, res) => {
     try {
         const getFlashCards = await flashCardModels.find();
         res.status(200).json(getFlashCards);
@@ -37,5 +37,15 @@ router.put("/put", authenticate, async (req, res) => {
     }
 })
 
+// http://localhost:3333/api/flashcards/remove
+router.delete("/remove", authenticate, async (req, res) => {
+    try {
+        const {id} = req.params
+        const deleteCard = await flashCardModels.remove(id)
+        res.status(200).json(deleteCard)
+    } catch(error) {
+        res.status(500).json("Internal Server Error")
+    }
+})
 
 module.exports = router;
